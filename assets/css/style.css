@@ -46,13 +46,12 @@ header {
 }
 
 .logo {
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
-.logo span { color: var(--primary); }
+.logo img { height: 32px; width: auto; display: block; }
 
 nav { display: flex; gap: 28px; }
 nav a { color: var(--text-muted); font-size: 15px; font-weight: 500; }
