@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /aviso-legal.html
+Disallow: /privacidad.html
+Disallow: /contacto.html
+
+Sitemap: https://gestorsocial.es/sitemap.xml
