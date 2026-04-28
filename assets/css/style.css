@@ -369,8 +369,42 @@ footer {
 .footer-links a { font-size: 13px; color: var(--text-muted); }
 
 /* RESPONSIVE */
+/* HAMBURGER */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+}
+
 @media (max-width: 640px) {
-  nav { display: none; }
+  .menu-toggle { display: flex; }
+  nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 99;
+  }
+  nav.open { display: flex; }
+  nav a { font-size: 17px; }
   .pros-cons { grid-template-columns: 1fr; }
   .compare-table { font-size: 13px; }
   .compare-table th, .compare-table td { padding: 10px 10px; }
