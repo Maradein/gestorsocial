@@ -42,19 +42,46 @@
 
   <div class="article-body">
 
-    <p>¿Tienes una pregunta, quieres proponer una colaboración o has encontrado un error en algún artículo? Escríbenos.</p>
+    <p>¿Tienes una pregunta, quieres proponer una colaboración o has encontrado un error en algún artículo? Escríbenos. Respondemos en 24–48 horas en días laborables.</p>
 
-    <h2>Correo electrónico</h2>
-    <p><strong><a href="mailto:gestorsocial.web@gmail.com">gestorsocial.web@gmail.com</a></strong></p>
-    <p>Respondemos en un plazo de 24-48 horas en días laborables.</p>
+    <form class="contact-form" id="contactForm" novalidate>
+      <input type="hidden" name="access_key" value="cc2a898c-0510-4062-bdf5-22e2a5f970df">
+      <input type="hidden" name="subject" value="Nuevo mensaje desde GestorSocial">
+      <input type="hidden" name="from_name" value="GestorSocial Web">
 
-    <h2>Para qué puedes escribirnos</h2>
-    <ul>
-      <li><strong>Errores o información desactualizada:</strong> si detectas que algún precio, función o dato de nuestros artículos ya no es correcto, avísanos. Lo corregimos en 24 horas.</li>
-      <li><strong>Sugerencias de contenido:</strong> ¿hay una herramienta o guía que te gustaría ver cubierta? Escríbenos.</li>
-      <li><strong>Colaboraciones:</strong> si representas una herramienta de gestión de redes sociales y quieres que la incluyamos en nuestros análisis, contacta indicando el nombre de la herramienta y el tipo de colaboración que propones.</li>
-      <li><strong>Privacidad y datos:</strong> para ejercer tus derechos RGPD o cualquier consulta sobre el tratamiento de datos personales.</li>
-    </ul>
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="motivo">Motivo</label>
+        <select id="motivo" name="motivo" required>
+          <option value="">Selecciona un motivo…</option>
+          <option value="error">Error o dato desactualizado</option>
+          <option value="sugerencia">Sugerencia de contenido</option>
+          <option value="colaboracion">Colaboración</option>
+          <option value="rgpd">Privacidad / RGPD</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos…" required></textarea>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Enviar mensaje</button>
+      </div>
+
+      <div class="form-status" id="formStatus"></div>
+    </form>
 
     <h2>Lo que no hacemos</h2>
     <p>No publicamos reseñas de pago ni artículos patrocinados que no estén claramente marcados como tal. No aceptamos solicitudes de modificación de opiniones o valoraciones a cambio de compensación económica.</p>
@@ -75,6 +102,41 @@
   </div>
 </footer>
 
+<script>
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('submitBtn');
+    var status = document.getElementById('formStatus');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    status.className = 'form-status';
+    status.textContent = '';
+
+    var data = Object.fromEntries(new FormData(this));
+    try {
+      var res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      var json = await res.json();
+      if (res.ok && json.success) {
+        status.className = 'form-status success';
+        status.textContent = 'Mensaje enviado. Te respondemos en 24–48 horas.';
+        this.reset();
+        if (typeof gtag === 'function') gtag('event', 'contact_form_submit', { motivo: data.motivo });
+      } else {
+        throw new Error(json.message || 'Error al enviar');
+      }
+    } catch (err) {
+      status.className = 'form-status error';
+      status.textContent = 'No se pudo enviar. Escríbenos a gestorsocial.web@gmail.com';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Enviar mensaje';
+  });
+</script>
+<script defer src="/assets/js/tracking.js"></script>
 </body>
 </html>
 
