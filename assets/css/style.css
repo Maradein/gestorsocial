@@ -111,6 +111,16 @@ nav a:hover { color: var(--primary); text-decoration: none; }
   border-radius: var(--radius);
   padding: 24px;
   transition: box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+
+.card-img {
+  display: block;
+  width: calc(100% + 48px);
+  height: 180px;
+  object-fit: cover;
+  margin: -24px -24px 20px -24px;
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .card:hover {
